@@ -7,5 +7,6 @@ Introduction to regions of interest and related tools within PlantCV.
 
 ## Tutorial tags/keywords
 
+tutorial, region of interest
 
 
