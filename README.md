@@ -1,5 +1,7 @@
 # Region of Interest
 
+[![test-pr](https://github.com/danforthcenter/plantcv-tutorial-roi/actions/workflows/ci-tests.yml/badge.svg)](https://github.com/danforthcenter/plantcv-tutorial-roi/actions/workflows/ci-tests.yml)
+
 Introduction to regions of interest and related tools within PlantCV. 
 
 
