@@ -1,42 +1,30 @@
 import os
-import shutil
-import pytest
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
 
-TEST_TMPDIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".cache")
 
+project_root = os.getcwd()
+inputs_list = [
+    [os.path.join(project_root, 'notebooks'), 'custom-roi-tutorial.ipynb'],
+    [os.path.join(project_root, 'notebooks'), 'roi-circle-tutorial.ipynb'],
+    [os.path.join(project_root, 'notebooks'), 'roi-rectangle-tutorial.ipynb']
+]
 
-# ##########################
-# Tests setup function
-# ##########################
-def setup_function():
-    if not os.path.exists(TEST_TMPDIR):
-        os.mkdir(TEST_TMPDIR)
-
-
-# ##########################
-# Tests executing the notebook
-# ##########################
-def test_notebook():
+@pytest.mark.parametrize('dir,notebook', inputs_list)
+def test_notebook(dir, notebook, tmpdir):
+    """Test the notebook."""
+    tmp = tmpdir.mkdir('sub')
     # Open the notebook
     with open("index.ipynb", "r") as f:
         nb = nbformat.read(f, as_version=4)
 
     # Process the notebook
     ep = ExecutePreprocessor(timeout=600, kernel_name="python3")
-    ep.preprocess(nb, {"metadata": {"path": TEST_TMPDIR}})
+    ep.preprocess(nb, {"metadata": {"path": os.getcwd()}})
 
     # Save the executed notebook
-    out_nb = os.path.join(TEST_TMPDIR, "executed_notebook.ipynb")
+    out_nb = os.path.join(tmp, "executed_notebook.ipynb")
     with open(out_nb, "w", encoding="utf-8") as f:
         nbformat.write(nb, f)
 
     assert os.path.exists(out_nb)
-
-
-# ##############################
-# Clean up test files
-# ##############################
-def teardown_function():
-    shutil.rmtree(TEST_TMPDIR)
